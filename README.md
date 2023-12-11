@@ -56,4 +56,43 @@ if (item.getValue() !== null && item.getValue() !== "") {
 
 Este código é uma maneira de garantir que uma data de agendamento esteja preenchida antes de enviar uma mensagem. Se a data estiver preenchida, ele chama `$.sendMessage(6)`, o que pode ser uma função personalizada definida em outro lugar no seu aplicativo APEX. Caso contrário, exibe um alerta indicando que a data de agendamento é necessária.
 
-Se tiver mais alguma dúvida ou precisar de ajustes, estou à disposição!
+# V3
+Esse bloco PL/SQL parece lidar com a inserção de dados em uma tabela chamada `CLIENTE_RESUMO` e a atualização de uma coluna na tabela `CLIENTE_AGENDAMENTO`. Vamos analisar as principais partes do código:
+
+1. **Declaração de Variável:**
+   ```plsql
+   resumo_value VARCHAR2(4000); -- Ou o tipo de dados adequado para o item P4_RESUMO
+   ```
+   Declaração de uma variável chamada `resumo_value`. O tipo de dados é VARCHAR2, com um tamanho máximo de 4000 caracteres (ou o tamanho adequado para o item `P4_RESUMO`). No entanto, a variável não é usada no restante do código.
+
+2. **Bloco PL/SQL Principal:**
+   ```plsql
+   BEGIN
+       IF :P4_RESUMO IS NOT NULL THEN
+           -- Código executado se o item P4_RESUMO não for nulo
+           INSERT INTO CLIENTE_RESUMO (
+               ID_CLIENTE,
+               RESUMO,
+               USER_NAME,
+               DATA
+           ) VALUES (
+               :P4_ID_CLIENTE,
+               :P4_RESUMO,
+               :APP_USER,
+               SYSDATE
+           );
+
+           UPDATE CLIENTE_AGENDAMENTO SET PRIMEIRO_CONTATO = :P4_PRIMEIRO_CONTATO WHERE 
+           ID_CLIENTE = :P4_ID_CLIENTE;
+       ELSE
+           -- Exibe uma mensagem se o item P4_RESUMO for nulo
+           htp.p('O Resumo do cliente não pode ficar sem preencher!!!');
+       END IF;
+   END;
+   ```
+   - O código verifica se o valor do item `P4_RESUMO` não é nulo.
+   - Se o valor não for nulo, ele executa uma inserção na tabela `CLIENTE_RESUMO`, utilizando valores dos itens `:P4_ID_CLIENTE`, `:P4_RESUMO`, `:APP_USER` e a data atual (`SYSDATE`).
+   - Em seguida, realiza uma atualização na tabela `CLIENTE_AGENDAMENTO`, definindo o valor de `PRIMEIRO_CONTATO` com o valor de `:P4_PRIMEIRO_CONTATO`, onde o `ID_CLIENTE` é igual a `:P4_ID_CLIENTE`.
+   - Se o valor do item `P4_RESUMO` for nulo, exibe uma mensagem indicando que o resumo do cliente não pode ficar sem preencher.
+
+Lembre-se de adaptar o código conforme necessário para atender aos requisitos específicos do seu aplicativo APEX.
