@@ -4,7 +4,7 @@ BEGIN
     -- Verifica se a validação passou e o item não é nulo
     IF :P4_RESUMO IS NOT NULL THEN
         -- Se a validação passou e o item não é nulo, execute o código
-        INSERT INTO J7_CLIENTE_RESUMO (
+        INSERT INTO CLIENTE_RESUMO (
             ID_CLIENTE,
             RESUMO,
             USER_NAME,
@@ -16,7 +16,7 @@ BEGIN
             SYSDATE
         );
 
-        UPDATE J7_CLIENTE_AGENDAMENTO SET PRIMEIRO_CONTATO = :P4_PRIMEIRO_CONTATO WHERE 
+        UPDATE CLIENTE_AGENDAMENTO SET PRIMEIRO_CONTATO = :P4_PRIMEIRO_CONTATO WHERE 
         ID_CLIENTE = :P4_ID_CLIENTE;
 
     ELSE
